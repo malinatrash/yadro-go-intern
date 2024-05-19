@@ -1,36 +1,38 @@
 package task
 
+import (
+	"sort"
+)
+
 func CanSortBalls(containers [][]int) string {
-	n := len(containers)
-
-	colorCounts := make(map[int]int)
-	for _, container := range containers {
-		for _, color := range container {
-			colorCounts[color]++
+	colorCounts := make([]int, len(containers))
+	containerCounts := make([]int, len(containers))
+	for i, container := range containers {
+		for _, count := range container {
+			containerCounts[i] += count
+		}
+		for index, count := range container {
+			colorCounts[index] += count
 		}
 	}
+	sort.Ints(containerCounts)
+	sort.Ints(colorCounts)
 
-	for _, count := range colorCounts {
-		if count%n != 0 {
-			return "no"
+	if isEqual(colorCounts, containerCounts) {
+		return "yes"
+	} else {
+		return "no"
+	}
+}
+
+func isEqual(slice1, slice2 []int) bool {
+	if len(slice1) != len(slice2) {
+		return false
+	}
+	for i := range slice1 {
+		if slice1[i] != slice2[i] {
+			return false
 		}
 	}
-
-	for i := 0; i < n; i++ {
-		if len(containers[i]) != n {
-			return "no"
-		}
-	}
-
-	for _, container := range containers {
-		seenColors := make(map[int]bool)
-		for i, _ := range container {
-			seenColors[i] = true
-		}
-		if len(seenColors) != n {
-			return "no"
-		}
-	}
-
-	return "yes"
+	return true
 }
