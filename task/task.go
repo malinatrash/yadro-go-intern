@@ -24,8 +24,8 @@ func CanSortBalls(containers [][]int) string {
 
 	for _, container := range containers {
 		seenColors := make(map[int]bool)
-		for _, color := range container {
-			seenColors[color] = true
+		for i, _ := range container {
+			seenColors[i] = true
 		}
 		if len(seenColors) != n {
 			return "no"
