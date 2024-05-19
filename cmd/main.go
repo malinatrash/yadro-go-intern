@@ -10,20 +10,32 @@ import (
 	"github.com/malinatrash/yadro-go-intern/task"
 )
 
-func main() {
-	reader := bufio.NewReader(os.Stdin)
-	nStr, _ := reader.ReadString('\n')
-	n, _ := strconv.Atoi(strings.TrimSpace(nStr))
-
+func readContainers(n int, reader *bufio.Scanner) [][]int {
 	containers := make([][]int, n)
-	for i := 0; i < n; i++ {
-		containers[i] = make([]int, n)
-		line, _ := reader.ReadString('\n')
-		parts := strings.Fields(line)
-		for j := 0; j < n; j++ {
-			containers[i][j], _ = strconv.Atoi(parts[j])
+	for i := 0; i < n && reader.Scan(); i++ {
+		line := strings.Fields(reader.Text())
+		containers[i] = make([]int, len(line))
+		for j, valStr := range line {
+			val, err := strconv.Atoi(valStr)
+			if err != nil {
+				panic(err)
+			}
+			containers[i][j] = val
 		}
 	}
+	return containers
+}
+
+func main() {
+	scanner := bufio.NewScanner(os.Stdin)
+
+	scanner.Scan()
+	n, err := strconv.Atoi(scanner.Text())
+	if err != nil {
+		panic(err)
+	}
+
+	containers := readContainers(n, scanner)
 
 	result := task.CanSortBalls(containers)
 	fmt.Println(result)
