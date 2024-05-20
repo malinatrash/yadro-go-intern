@@ -5,18 +5,6 @@ import (
 )
 
 func CanSortBalls(containers [][]int) string {
-
-	maxCountColor := 0
-	for _, container := range containers {
-		if len(container) > maxCountColor {
-			maxCountColor = len(container)
-		}
-	}
-
-	if maxCountColor > len(containers) {
-		return "no"
-	}
-
 	colorCounts := make([]int, len(containers))
 	containerCounts := make([]int, len(containers))
 	for i, container := range containers {
